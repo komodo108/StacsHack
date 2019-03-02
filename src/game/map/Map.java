@@ -29,6 +29,7 @@ public class Map {
                 BufferedReader br = new BufferedReader(new FileReader(map_number_file));
                 BufferedWriter bw = new BufferedWriter(new FileWriter(map_number_file, false));
                 number = Integer.parseInt(br.readLine());
+
                 if (number < max) {
                     // Increment
                     bw.write(number + 1);
@@ -38,6 +39,7 @@ public class Map {
                     bw.write(1);
                     bw.flush();
                 }
+
                 bw.close();
                 br.close();
             }
@@ -58,14 +60,25 @@ public class Map {
                 char[] chars = line.toCharArray();
                 for(int j = 0; j < chars.length; j++) {
                     switch(chars[j]) {
-                        case 'W':
+                        case 'W': // Wall
                             tiles[i][j] = Tile.WALL;
                             break;
-                        case '.':
+                        case '.': // Floor
                             tiles[i][j] = Tile.FLOOR;
                             break;
-                        case 'I':
+                        case 'I': // Ice
                             tiles[i][j] = Tile.QUESTION_ICE;
+                            break;
+                        case 'F': // Fire item
+                            items.setItemAt(new Position(i, j), Tile.FIRE);
+                            break;
+                        case 'f': // Flask item
+                            items.setItemAt(new Position(i, j), Tile.FLASK);
+                            break;
+                        case 'P': // Pick item
+                            items.setItemAt(new Position(i, j), Tile.PICK);
+                        case 'X': // End final tile
+                            tiles[i][j] = Tile.FINAL;
                             break;
                     }
                 }

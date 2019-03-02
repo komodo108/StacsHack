@@ -15,7 +15,7 @@ public class ItemManager {
 
     private ItemManager() { }
 
-    void setItemAt(Position pos, Tile tile) {
+    public void setItemAt(Position pos, Tile tile) {
         IItem item;
 
         switch(tile) {
@@ -37,7 +37,7 @@ public class ItemManager {
         } return null;
     }
 
-    void deleteItem(IItem item) {
+    public void deleteItem(IItem item) {
         for(IItem i : items) {
             if(i.equals(item)) items.remove(i);
         }
