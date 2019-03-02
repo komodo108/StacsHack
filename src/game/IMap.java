@@ -3,13 +3,13 @@ package game;
 import game.helper.Position;
 
 public interface IMap {
-    ITile[][] getMap();
+    Tile[][] getMap();
 
     void updateTileAt(Position pos);
 
-    ITile getTileAt(Position pos);
+    Tile getTileAt(Position pos);
 
     void generateMap();
 
-    Position getSingleTile(ITile tile);
+    Position getSingleTile(Tile tile);
 }
