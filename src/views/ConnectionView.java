@@ -2,14 +2,14 @@ package views;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.net.Inet4Address;
 import java.net.UnknownHostException;
 
 public class ConnectionView {
 
     private JFrame frame;
-    private JLabel info;
+    private JLabel info, info_ip;
     private JTextField ip;
     private JButton button, next;
 
@@ -33,15 +33,43 @@ public class ConnectionView {
         info.setFont(new Font("Arial", Font.PLAIN, 18));
         frame.add(info);
 
-        if(isClient) {
+        if(!isClient) {
+            info_ip = new JLabel();
+            String message;
+
+            try {
+                message = "Your IP: " + Inet4Address.getLocalHost().getHostAddress();
+            } catch (UnknownHostException e) {
+                message = "Can't find localhost!";
+            }
+
+            info_ip.setText(message);
+            info_ip.setBounds(20, 60, width - 40, 40);
+            info_ip.setFont(new Font("Arial", Font.PLAIN, 18));
+            frame.add(info_ip);
+        } else {
             ip = new JTextField();
             ip.setBounds(20, 60, width - 40, 40);
             ip.setToolTipText("Enter your partners IP address");
+            ip.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    if(!ip.getText().matches("[1-9.]+")) ip.setText("");
+                    button.setEnabled(ip.getText().length() > 7);
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) { }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) { }
+            });
             frame.add(ip);
         }
 
         button = new JButton(isClient ? "Connect to Server" : "Host Server");
         button.setBounds(20, 230, width - 100, 50);
+        button.setEnabled(!isClient);
         frame.add(button);
 
         // CLIENT
@@ -55,7 +83,7 @@ public class ConnectionView {
                     } else {
                         // Server
                         new MainView(false, null);
-                    }
+                    } frame.dispose();
                 } catch (Exception e) {
                     info.setText("Connection Error! Try again");
                     info.setForeground(Color.RED);

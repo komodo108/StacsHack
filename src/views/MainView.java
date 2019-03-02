@@ -25,6 +25,7 @@ public class MainView extends Observable implements Observer {
     private Render render;
     private KeyListen listen;
     private String ip;
+    private boolean mode;
 
     private int width = 700;
     private int height = 700;
@@ -34,8 +35,9 @@ public class MainView extends Observable implements Observer {
     private BufferedReader read;
     private BufferedWriter write;
 
-    public MainView(boolean mode, String ip) throws UnknownHostException {
+    public MainView(boolean mode, String ip) {
         this.ip = ip;
+        this.mode = mode;
 
         if(mode) setupClient();
         else setupServer();
@@ -43,7 +45,7 @@ public class MainView extends Observable implements Observer {
         gameloop();
     }
 
-    public void setupClient() throws UnknownHostException {
+    public void setupClient() {
         try {
             s = new Socket(ip, 2727);
             write = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
@@ -95,15 +97,15 @@ public class MainView extends Observable implements Observer {
                     service.submit(() -> {
                         try {
                             IPacket packet = Packet.readNextPacket(read);
+                            System.out.println("Received a packet of type " + packet.getType());
 
-                            if(packet == null) {
-                                throw new RuntimeException("Null packet!");
-                            } else {
-                                // TODO: Packets
-                                if(packet instanceof HelloPacket) { }
-                            }
+                            // TODO: Packets
+                            if(packet instanceof HelloPacket) { }
                         } catch (IOException | CorruptedPacketException e) {
                             e.printStackTrace();
+                        } catch (NullPointerException e) {
+                            System.err.println("Received null packet!!");
+                            System.exit(3);
                         }
                     }).get(10, TimeUnit.SECONDS);
                     service.shutdown();
