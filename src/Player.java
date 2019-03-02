@@ -1,4 +1,5 @@
 import game.IPlayer;
+import game.Tile;
 import game.helper.Direction;
 import game.helper.Position;
 import game.items.IItem;
@@ -37,29 +38,33 @@ public class Player implements IPlayer {
     //direction-dependent
     @Override
     public void pickUpItem() {
-        if(item == null) {
+        if (item == null) {
             switch (dir.getAsString()) {
                 case "LEFT":
-                    if (im.getItemAt(new Position(pos.getX()+1, pos.getY()))  != null) {
-                        item = im.getItemAt(pos);
+                    if (im.getItemAt(new Position(pos.getX() + 1, pos.getY())) != null) {
+                        item = im.getItemAt(new Position(pos.getX() + 1, pos.getY()));
+                        im.deleteItem(item);
                     }
                     break;
 
                 case "RIGHT":
-                    if (im.getItemAt(new Position(pos.getX()-1, pos.getY()))  != null) {
-                        item = im.getItemAt(pos);
+                    if (im.getItemAt(new Position(pos.getX() - 1, pos.getY())) != null) {
+                        item = im.getItemAt(new Position(pos.getX() - 1, pos.getY()));
+                        im.deleteItem(item);
                     }
                     break;
 
                 case "UP":
-                    if (im.getItemAt(new Position(pos.getX(), pos.getY()+1))  != null) {
-                        item = im.getItemAt(pos);
+                    if (im.getItemAt(new Position(pos.getX(), pos.getY() + 1)) != null) {
+                        item = im.getItemAt(new Position(pos.getX(), pos.getY() + 1));
+                        im.deleteItem(item);
                     }
                     break;
 
                 case "DOWN":
-                    if (im.getItemAt(new Position(pos.getX(), pos.getY()-1))  != null) {
-                        item = im.getItemAt(pos);
+                    if (im.getItemAt(new Position(pos.getX(), pos.getY() - 1)) != null) {
+                        item = im.getItemAt(im.getItemAt(new Position(pos.getX(), pos.getY() - 1));
+                        im.deleteItem(item);
                     }
                     break;
             }
@@ -69,7 +74,15 @@ public class Player implements IPlayer {
     //direction-dependent
     @Override
     public void breakIce() {
-
+        if (new Position(pos.getX() - 1, pos.getY()).equals(Tile.QUESTION_ICE)) {
+            map.updateTileAt(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION);
+        } else if (new Position(pos.getX() + 1, pos.getY()).equals(Tile.QUESTION_ICE)) {
+            map.updateTileAt(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION);
+        } else if (new Position(pos.getX(), pos.getY() + 1).equals(Tile.QUESTION_ICE)) {
+            map.updateTileAt(new Position(pos.getX(), pos.getY()+1), Tile.QUESTION);
+        } else (new Position(pos.getX(), pos.getY() - 1).equals(Tile.QUESTION_ICE)) {
+            map.updateTileAt(new Position(pos.getX(), pos.getY()-1), Tile.QUESTION);
+        }
     }
 
     @Override
