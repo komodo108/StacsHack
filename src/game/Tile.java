@@ -1,19 +1,31 @@
 package game;
 
 public enum Tile {
-    // TODO: Not needed!
-    // There is only 1 type of tile
-    // Replace with Tile class
+    // TODO: Change
 
-    PLAYER1_W_UP(0, 0, false),
-    PLAYER1_S_DOWN(0, 0, false),
-    PLAYER1_A_LEFT(0, 0, false),
-    PLAYER1_D_RIGHT(0, 0, false),
+    // Player 1
+    PLAYER_A_UP(0, 0, false),
+    PLAYER_A_DOWN(0, 0, false),
+    PLAYER_A_LEFT(0, 0, false),
+    PLAYER_A_RIGHT(0, 0, false),
 
-    PLAYER2_J_UP(0, 0, false),
-    PLAYER2_N_DOWN(0, 0, false),
-    PLAYER2_B_LEFT(0, 0, false),
-    PLAYER2_M_RIGHT(0, 0, false);
+    // Player 2
+    PLAYER_B_UP(0, 0, false),
+    PLAYER_B_DOWN(0, 0, false),
+    PLAYER_B_LEFT(0, 0, false),
+    PLAYER_B_RIGHT(0, 0, false),
+
+    // Ice breaking tools
+    FIRE(0, 0, false),
+    PICK(0, 0, false),
+    FLASK(0, 0, false),
+
+    // Map blocks
+    WALL(0, 0, false),
+    FLOOR(0, 0, true),
+    QUESTION_ICE(0, 0, false),
+    QUESTION(0, 0, true),
+    FINAL(0, 0, true);
 
     private int tile_x_pos;
     private int tile_y_pos;

@@ -20,7 +20,7 @@ import java.util.TimerTask;
 import java.util.concurrent.*;
 
 public class MainView extends Observable implements Observer {
-    private boolean canUpdate = false;
+    public static boolean canUpdate = false;
     private JFrame frame;
     private Render render;
     private KeyListen listen;
@@ -68,7 +68,7 @@ public class MainView extends Observable implements Observer {
     }
 
     public void makeFrame() {
-        render = new Render();
+        render = new Render(icebreaker, helper);
         render.setBounds(0, 0, width, height);
 
         frame = new JFrame("Cool Boiz");

@@ -2,6 +2,7 @@ package game;
 
 import game.helper.Direction;
 import game.helper.Position;
+import game.items.IItem;
 
 public interface IPlayer {
 
