@@ -51,8 +51,10 @@ public class ConnectionView {
                 try {
                     if(isClient) {
                         // Client
+                        new MainView(true, ip.getText());
                     } else {
                         // Server
+                        new MainView(false, null);
                     }
                 } catch (Exception e) {
                     info.setText("Connection Error! Try again");

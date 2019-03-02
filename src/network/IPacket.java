@@ -1,4 +1,11 @@
 package network;
 
-public class IPacket {
+public interface IPacket {
+
+    PacketType getType();
+
+    String asData();
+
+    String asPacket();
+
 }

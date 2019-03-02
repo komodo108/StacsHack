@@ -1,25 +1,71 @@
 package views;
 
+import game.IPlayer;
 import game.render.Render;
 import listener.KeyListen;
-import network.Client;
-import network.Server;
+import network.CorruptedPacketException;
+import network.IPacket;
+import network.Packet;
+import network.types.HelloPacket;
 
 import javax.swing.*;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.*;
 
-public class MainView implements Observer {
-
+public class MainView extends Observable implements Observer {
+    private boolean canUpdate = false;
     private JFrame frame;
     private Render render;
     private KeyListen listen;
+    private String ip;
 
     private int width = 700;
     private int height = 700;
 
-    public MainView(boolean isClient, String ip) throws UnknownHostException {
+    private Socket s;
+    private IPlayer icebreaker, helper;
+    private BufferedReader read;
+    private BufferedWriter write;
+
+    public MainView(boolean mode, String ip) throws UnknownHostException {
+        this.ip = ip;
+
+        if(mode) setupClient();
+        else setupServer();
+        makeFrame();
+        gameloop();
+    }
+
+    public void setupClient() throws UnknownHostException {
+        try {
+            s = new Socket(ip, 2727);
+            write = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+            read = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void setupServer() {
+        try {
+            ServerSocket serverSocket = new ServerSocket(2727);
+            s = serverSocket.accept();
+            write = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+            read = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void makeFrame() {
         render = new Render();
         render.setBounds(0, 0, width, height);
 
@@ -33,18 +79,67 @@ public class MainView implements Observer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
-        if(isClient) {
-            Client client = new Client(ip);
-            client.addObserver(this);
-            new Thread(client).start();
-        } else {
-            Server server = new Server();
-            server.addObserver(this);
-            new Thread(server).start();
-        }
-
         frame.addKeyListener(listen);
         frame.repaint();
+
+        addObserver(this);
+    }
+
+    public void gameloop() {
+        Timer readTimer = new Timer();
+        readTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ExecutorService service = Executors.newSingleThreadExecutor();
+                try {
+                    service.submit(() -> {
+                        try {
+                            IPacket packet = Packet.readNextPacket(read);
+
+                            if(packet == null) {
+                                throw new RuntimeException("Null packet!");
+                            } else {
+                                // TODO: Packets
+                                if(packet instanceof HelloPacket) { }
+                            }
+                        } catch (IOException | CorruptedPacketException e) {
+                            e.printStackTrace();
+                        }
+                    }).get(10, TimeUnit.SECONDS);
+                    service.shutdown();
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 50);
+
+        Timer renderTimer = new Timer();
+        renderTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(canUpdate) {
+                    setChanged();
+                    notifyObservers();
+
+                    canUpdate = false;
+                } else {
+                    canUpdate = true;
+                }
+            }
+        }, 0, 50);
+
+        Timer helloTimer = new Timer();
+        helloTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    write.write(new HelloPacket().asPacket());
+                    write.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 1000);
     }
 
     @Override
