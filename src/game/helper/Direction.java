@@ -1,3 +1,5 @@
+package game.helper;
+
 public enum Direction {
     LEFT("LEFT"),
     RIGHT("RIGHT"),

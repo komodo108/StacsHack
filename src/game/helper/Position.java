@@ -1,3 +1,5 @@
+package game.helper;
+
 public class Position {
 
     private int x;
