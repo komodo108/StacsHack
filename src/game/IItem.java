@@ -8,6 +8,4 @@ public interface IItem {
 
     String getType();
 
-    // TODO:
-
 }
