@@ -22,7 +22,7 @@ public enum Tile {
     Tile(int tile_x_pos, int tile_y_pos, boolean transparent) {
         this.tile_x_pos = tile_x_pos;
         this.tile_y_pos = tile_y_pos;
-        this.transparent = transparent
+        this.transparent = transparent;
     }
 
     public int getX() {
