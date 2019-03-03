@@ -37,7 +37,7 @@ public class KeyListen implements KeyListener {
                     break;
                 case VK_SPACE:
                     // Interact with an item / block
-                    if(player.getCurrentItem() == null) player.pickUpItem();
+                    player.pickUpItem();
                     player.breakIce();
                     break;
             } MainView.canUpdate = false;

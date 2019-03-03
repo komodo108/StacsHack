@@ -7,7 +7,6 @@ import game.items.IItem;
 import java.util.Observer;
 
 public interface IPlayer {
-
     // The main interface of the player
     Position getPosition();
 

@@ -47,7 +47,9 @@ public class Player extends Observable implements IPlayer {
     //direction-dependent
     @Override
     public void pickUpItem() {
+        System.out.println("tryna get the item...");
         if (item == null) {
+            System.out.println("we're in the switch..");
             switch (dir) {
                 case RIGHT:
                     if (im.getItemAt(new Position(pos.getX() + 1, pos.getY())) != null) {
@@ -83,16 +85,21 @@ public class Player extends Observable implements IPlayer {
     //direction-dependent
     @Override
     public void breakIce() {
-        if (new Position(pos.getX() - 1, pos.getY()).equals(Tile.QUESTION_ICE)) {
+        System.out.println("tryna break the ice...");
+        if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
+            System.out.println("WE HERE BOI1");
             map.updateTileAt(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION);
             notifyOthers();
-        } else if (new Position(pos.getX() + 1, pos.getY()).equals(Tile.QUESTION_ICE)) {
+        } else if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
+            System.out.println("WE HERE BOI2");
             map.updateTileAt(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION);
             notifyOthers();
-        } else if (new Position(pos.getX(), pos.getY() + 1).equals(Tile.QUESTION_ICE)) {
+        } else if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).equals(Tile.QUESTION_ICE)) {
+            System.out.println("WE HERE BOI3");
             map.updateTileAt(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION);
             notifyOthers();
-        } else if (new Position(pos.getX(), pos.getY() - 1).equals(Tile.QUESTION_ICE)) {
+        } else if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).equals(Tile.QUESTION_ICE)) {
+            System.out.println("WE HERE BOI4");
             map.updateTileAt(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION);
             notifyOthers();
         }
