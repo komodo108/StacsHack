@@ -27,4 +27,6 @@ public interface IPlayer {
     void addUpdater(Observer o);
 
     boolean safeTile(Direction direction);
+
+    void setCurrentItem(IItem item);
 }

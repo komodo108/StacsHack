@@ -5,6 +5,7 @@ import game.Player;
 import game.Tile;
 import game.helper.Direction;
 import game.helper.Position;
+import game.items.IItem;
 import game.items.ItemManager;
 import game.map.Map;
 import game.render.Render;
@@ -125,12 +126,17 @@ public class MainView extends Observable implements Observer {
                             IPacket packet = Packet.readNextPacket(read);
                             System.out.println("Received a packet of type " + packet.getType());
 
-                            // TODO: Packets
                             if(packet instanceof HelloPacket) {
                                 /* Do nothing */
                             } else if(packet instanceof ItemRemovePacket) {
                                 ItemRemovePacket itemRemovePacket = (ItemRemovePacket) packet;
+                                IItem item = manager.getItemAt(itemRemovePacket.getItemPosition());
                                 manager.deleteItemAt(itemRemovePacket.getItemPosition());
+                                if(mode) {
+                                    helper.setCurrentItem(item);
+                                } else {
+                                    icebreaker.setCurrentItem(item);
+                                }
                             } else if(packet instanceof MapPacket) {
                                 MapPacket mapPacket = (MapPacket) packet;
                                 map.updateTileAt(mapPacket.getPosition(), mapPacket.getTile());
