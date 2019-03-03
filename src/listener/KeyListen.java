@@ -45,6 +45,7 @@ public class KeyListen implements KeyListener {
             case VK_SPACE:
                 // Interact with an item / block
                 player.pickUpItem();
+                player.askQ();
                 player.breakIce();
                 break;
         }

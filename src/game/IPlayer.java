@@ -14,6 +14,8 @@ public interface IPlayer {
 
     IItem getCurrentItem();
 
+    void askQ();
+
     void pickUpItem();
 
     void breakIce();

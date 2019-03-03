@@ -60,9 +60,9 @@ public class MainView extends Observable implements Observer {
             map = Map.getInstance();
             manager = ItemManager.getInstance();
 
-            icebreaker = new Player(new Position(1, 1), Direction.DOWN, null);
-            helper = new Player(new Position(2, 1), Direction.DOWN, icebreaker);
-            icebreaker.updatePlayer2(helper);
+            icebreaker = new Player(new Position(1, 1), Direction.DOWN);
+            helper = new Player(new Position(2, 1), Direction.DOWN);
+//            icebreaker.updatePlayer2(helper);
             icebreaker.addUpdater(this);
 
             listen = new KeyListen(icebreaker);
@@ -82,9 +82,9 @@ public class MainView extends Observable implements Observer {
             map = Map.getInstance();
             manager = ItemManager.getInstance();
 
-            icebreaker = new Player(new Position(2, 1), Direction.DOWN, null);
-            helper = new Player(new Position(1, 1), Direction.DOWN, icebreaker);
-            icebreaker.updatePlayer2(helper);
+            icebreaker = new Player(new Position(2, 1), Direction.DOWN);
+            helper = new Player(new Position(1, 1), Direction.DOWN);
+//            icebreaker.updatePlayer2(helper);
             icebreaker.addUpdater(this);
 
             listen = new KeyListen(icebreaker);
