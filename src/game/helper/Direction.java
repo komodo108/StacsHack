@@ -15,17 +15,4 @@ public enum Direction {
     Direction(String name) {
         this.name = name;
     }
-
-    public static Direction getFrom(String direction) {
-        switch (direction) {
-            case "LEFT":
-                return Direction.LEFT;
-            case "RIGHT":
-                return Direction.RIGHT;
-            case "UP":
-                return Direction.UP;
-            case "DOWN":
-                return Direction.DOWN;
-        } return null;
-    }
 }

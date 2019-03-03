@@ -59,7 +59,7 @@ public class MapPacket extends Packet {
 
     @Override
     public PacketType getType() {
-        return PacketType.PLAYER;
+        return PacketType.MAP;
     }
 
     @Override

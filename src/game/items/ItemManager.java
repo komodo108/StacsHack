@@ -4,6 +4,7 @@ import game.Tile;
 import game.helper.Position;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ItemManager {
     private static ItemManager ourInstance = new ItemManager();
@@ -11,7 +12,7 @@ public class ItemManager {
         return ourInstance;
     }
 
-    private ArrayList<IItem> items = new ArrayList<>();
+    private CopyOnWriteArrayList<IItem> items = new CopyOnWriteArrayList<>();
 
     private ItemManager() { }
 
@@ -31,7 +32,7 @@ public class ItemManager {
         } items.add(item);
     }
 
-    public ArrayList<IItem> getItems() {
+    public CopyOnWriteArrayList<IItem> getItems() {
         return items;
     }
 

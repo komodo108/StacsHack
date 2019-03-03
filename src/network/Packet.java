@@ -9,7 +9,7 @@ public abstract class Packet implements IPacket {
 
     @Override
     public String asPacket() {
-        return "PIXL " + this.getType() + "\n" + this.asData() + "\n" + "END\n";
+        return "ICEY " + this.getType() + "\n" + this.asData() + "\n" + "END\n";
     }
 
     /**
@@ -20,7 +20,7 @@ public abstract class Packet implements IPacket {
      */
     public static IPacket fromData(String input) throws CorruptedPacketException {
         String pixl = input.substring(0, 4);
-        if(pixl.equals("PIXL")) {
+        if(pixl.equals("ICEY")) {
             String firstLine = input.substring(5, input.indexOf('\n'));
             String data = firstLine.equals(input.trim()) ? "" : input.substring(input.indexOf('\n') + 1, input.length() - 1);
 

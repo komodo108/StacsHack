@@ -62,7 +62,7 @@ public class MainView extends Observable implements Observer {
             manager = ItemManager.getInstance();
 
             icebreaker = new Player(new Position(1, 1), Direction.DOWN, write);
-            helper = new Player(new Position(2, 1), Direction.DOWN, null);
+            helper = new Player(new Position(2, 1), Direction.DOWN, write);
             icebreaker.addUpdater(this);
 
             listen = new KeyListen(icebreaker);
@@ -82,7 +82,7 @@ public class MainView extends Observable implements Observer {
             map = Map.getInstance();
             manager = ItemManager.getInstance();
 
-            icebreaker = new Player(new Position(2, 1), Direction.DOWN, null);
+            icebreaker = new Player(new Position(2, 1), Direction.DOWN, write);
             helper = new Player(new Position(1, 1), Direction.DOWN, write);
             icebreaker.addUpdater(this);
 
@@ -129,7 +129,8 @@ public class MainView extends Observable implements Observer {
                             if(packet instanceof HelloPacket) {
                                 /* Do nothing */
                             } else if(packet instanceof ItemRemovePacket) {
-                                manager.deleteItemAt(((ItemRemovePacket) packet).getItemPosition());
+                                ItemRemovePacket itemRemovePacket = (ItemRemovePacket) packet;
+                                manager.deleteItemAt(itemRemovePacket.getItemPosition());
                             } else if(packet instanceof MapPacket) {
                                 MapPacket mapPacket = (MapPacket) packet;
                                 map.updateTileAt(mapPacket.getPosition(), mapPacket.getTile());
@@ -139,9 +140,11 @@ public class MainView extends Observable implements Observer {
                                 PlayerPacket playerPacket = (PlayerPacket) packet;
                                 if(mode) {
                                     helper = playerPacket.getPlayer();
+                                    icebreaker.setOther(helper);
                                     render.setOther(helper);
                                 } else {
                                     icebreaker = playerPacket.getPlayer();
+                                    helper.setOther(icebreaker);
                                     render.setOther(icebreaker);
                                 }
                             } else if(packet instanceof WinPacket) {

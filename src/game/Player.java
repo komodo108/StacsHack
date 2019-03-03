@@ -5,8 +5,12 @@ import game.helper.Position;
 import game.items.IItem;
 import game.items.ItemManager;
 import game.map.Map;
+import network.types.ItemRemovePacket;
+import network.types.MapPacket;
+import network.types.PlayerPacket;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -57,7 +61,13 @@ public class Player extends Observable implements IPlayer {
                     if (im.getItemAt(new Position(pos.getX() + 1, pos.getY())) != null) {
                         item = im.getItemAt(new Position(pos.getX() + 1, pos.getY()));
                         im.deleteItem(item);
-                        notifyOthers();
+
+                        try {
+                            write.write(new ItemRemovePacket(item.getPosition()).asPacket());
+                            write.flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } notifyOthers();
                     }
                     break;
 
@@ -65,7 +75,13 @@ public class Player extends Observable implements IPlayer {
                     if (im.getItemAt(new Position(pos.getX() - 1, pos.getY())) != null) {
                         item = im.getItemAt(new Position(pos.getX() - 1, pos.getY()));
                         im.deleteItem(item);
-                        notifyOthers();
+
+                        try {
+                            write.write(new ItemRemovePacket(item.getPosition()).asPacket());
+                            write.flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } notifyOthers();
                     }
                     break;
 
@@ -73,7 +89,13 @@ public class Player extends Observable implements IPlayer {
                     if (im.getItemAt(new Position(pos.getX(), pos.getY() + 1)) != null) {
                         item = im.getItemAt(new Position(pos.getX(), pos.getY() + 1));
                         im.deleteItem(item);
-                        notifyOthers();
+
+                        try {
+                            write.write(new ItemRemovePacket(item.getPosition()).asPacket());
+                            write.flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } notifyOthers();
                     }
                     break;
 
@@ -81,7 +103,13 @@ public class Player extends Observable implements IPlayer {
                     if (im.getItemAt(new Position(pos.getX(), pos.getY() - 1)) != null) {
                         item = im.getItemAt(new Position(pos.getX(), pos.getY() - 1));
                         im.deleteItem(item);
-                        notifyOthers();
+
+                        try {
+                            write.write(new ItemRemovePacket(item.getPosition()).asPacket());
+                            write.flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } notifyOthers();
                     }
                     break;
             }
@@ -93,16 +121,40 @@ public class Player extends Observable implements IPlayer {
     public void breakIce() {
         if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
             map.updateTileAt(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION);
-            notifyOthers();
+
+            try {
+                write.write(new MapPacket(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION, null).asPacket());
+                write.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } notifyOthers();
         } else if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
             map.updateTileAt(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION);
-            notifyOthers();
+
+            try {
+                write.write(new MapPacket(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION, null).asPacket());
+                write.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } notifyOthers();
         } else if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).equals(Tile.QUESTION_ICE)) {
             map.updateTileAt(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION);
-            notifyOthers();
+
+            try {
+                write.write(new MapPacket(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION, null).asPacket());
+                write.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } notifyOthers();
         } else if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).equals(Tile.QUESTION_ICE)) {
             map.updateTileAt(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION);
-            notifyOthers();
+
+            try {
+                write.write(new MapPacket(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION, null).asPacket());
+                write.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } notifyOthers();
         }
     }
 
@@ -140,7 +192,13 @@ public class Player extends Observable implements IPlayer {
                 if (safeTile(direction)) {
                     dir = Direction.RIGHT;
                     pos.set(pos.getX() + 1, pos.getY());
-                    notifyOthers();
+
+                    try {
+                        write.write(new PlayerPacket(this).asPacket());
+                        write.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } notifyOthers();
                 }
                 break;
 
@@ -148,7 +206,13 @@ public class Player extends Observable implements IPlayer {
                 if (safeTile(direction)) {
                     dir = Direction.LEFT;
                     pos.set(pos.getX() - 1, pos.getY());
-                    notifyOthers();
+
+                    try {
+                        write.write(new PlayerPacket(this).asPacket());
+                        write.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } notifyOthers();
                 }
                 break;
 
@@ -156,7 +220,13 @@ public class Player extends Observable implements IPlayer {
                 if (safeTile(direction)) {
                     dir = Direction.DOWN;
                     pos.set(pos.getX(), pos.getY() + 1);
-                    notifyOthers();
+
+                    try {
+                        write.write(new PlayerPacket(this).asPacket());
+                        write.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } notifyOthers();
                 }
                 break;
 
@@ -164,7 +234,13 @@ public class Player extends Observable implements IPlayer {
                 if (safeTile(direction)) {
                     dir = Direction.UP;
                     pos.set(pos.getX(), pos.getY() - 1);
-                    notifyOthers();
+
+                    try {
+                        write.write(new PlayerPacket(this).asPacket());
+                        write.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } notifyOthers();
                 }
                 break;
         }

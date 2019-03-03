@@ -39,8 +39,7 @@ public class PlayerPacket extends Packet {
             }
         }
 
-        Direction dir = Direction.getFrom(direction);
-        return new PlayerPacket(new Player(new Position(x, y), dir, null));
+        return new PlayerPacket(new Player(new Position(x, y), Direction.valueOf(direction), null));
     }
 
     @Override

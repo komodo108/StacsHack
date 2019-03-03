@@ -33,7 +33,7 @@ public class WinPacket extends Packet {
 
     @Override
     public PacketType getType() {
-        return PacketType.PLAYER;
+        return PacketType.WIN;
     }
 
     @Override

@@ -40,7 +40,7 @@ public class ItemRemovePacket extends Packet {
 
     @Override
     public PacketType getType() {
-        return PacketType.PLAYER;
+        return PacketType.ITEM;
     }
 
     @Override
