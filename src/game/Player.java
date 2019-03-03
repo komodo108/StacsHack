@@ -119,43 +119,50 @@ public class Player extends Observable implements IPlayer {
     //direction-dependent
     @Override
     public void breakIce() {
-        if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
-            map.updateTileAt(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION);
+        //if (other.getCurrentItem() != null && Math.abs(other.getPosition().getX() - this.getPosition().getX()) <= 2
+                //&& Math.abs(other.getPosition().getY() - this.getPosition().getY()) <= 2) {
+            if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
+                map.updateTileAt(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION);
 
-            try {
-                write.write(new MapPacket(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION, null).asPacket());
-                write.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
-            map.updateTileAt(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION);
+                try {
+                    write.write(new MapPacket(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION, null).asPacket());
+                    write.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                notifyOthers();
+            } else if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
+                map.updateTileAt(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION);
 
-            try {
-                write.write(new MapPacket(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION, null).asPacket());
-                write.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).equals(Tile.QUESTION_ICE)) {
-            map.updateTileAt(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION);
+                try {
+                    write.write(new MapPacket(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION, null).asPacket());
+                    write.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                notifyOthers();
+            } else if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).equals(Tile.QUESTION_ICE)) {
+                map.updateTileAt(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION);
 
-            try {
-                write.write(new MapPacket(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION, null).asPacket());
-                write.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).equals(Tile.QUESTION_ICE)) {
-            map.updateTileAt(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION);
+                try {
+                    write.write(new MapPacket(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION, null).asPacket());
+                    write.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                notifyOthers();
+            } else if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).equals(Tile.QUESTION_ICE)) {
+                map.updateTileAt(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION);
 
-            try {
-                write.write(new MapPacket(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION, null).asPacket());
-                write.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } notifyOthers();
-        }
+                try {
+                    write.write(new MapPacket(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION, null).asPacket());
+                    write.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                notifyOthers();
+            }
+        //}
     }
 
     @Override
@@ -284,6 +291,10 @@ public class Player extends Observable implements IPlayer {
                 break;
         }
         return false;
+    }
+
+    public void setCurrentItem(IItem item) {
+        this.item = item;
     }
 
     private void notifyOthers() {

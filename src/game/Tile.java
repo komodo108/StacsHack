@@ -1,8 +1,6 @@
 package game;
 
 public enum Tile {
-    // TODO: Change
-
     // game.Player 1
     PLAYER_A_UP(9,  false),
     PLAYER_A_DOWN(10,  false),
@@ -24,7 +22,7 @@ public enum Tile {
     WALL(1,  false),
     FLOOR(0,  true),
     QUESTION_ICE(2,  false),
-    QUESTION(3, true),
+    QUESTION(3, false),
     FINAL(19,  true),
 
     // Ice crystals
