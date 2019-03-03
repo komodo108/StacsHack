@@ -171,11 +171,11 @@ public class Player extends Observable implements IPlayer {
                 break;
 
             case DOWN:
-                p = new Position(pos.getX(), pos.getY() - 1);
+                p = new Position(pos.getX(), pos.getY() + 1);
                 break;
 
             case UP:
-                p = new Position(pos.getX(), pos.getY() + 1);
+                p = new Position(pos.getX(), pos.getY() - 1);
                 break;
         }
 
