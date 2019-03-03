@@ -54,7 +54,7 @@ public class ConnectionView {
             ip.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    if(!ip.getText().matches("[1-9.]+")) ip.setText("");
+                    if(!ip.getText().matches("[0-9.]+")) ip.setText("");
                     button.setEnabled(ip.getText().length() > 7);
                 }
 
