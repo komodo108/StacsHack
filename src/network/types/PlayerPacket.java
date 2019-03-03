@@ -1,7 +1,9 @@
 package network.types;
 
 import game.IPlayer;
+import game.Player;
 import game.helper.Direction;
+import game.helper.Position;
 import network.Packet;
 import network.PacketType;
 
@@ -17,7 +19,6 @@ public class PlayerPacket extends Packet {
     }
 
     public static PlayerPacket fromData(String data) {
-        String type = null;
         int x = 0, y = 0;
         String direction = null;
 
@@ -39,7 +40,7 @@ public class PlayerPacket extends Packet {
         }
 
         Direction dir = Direction.getFrom(direction);
-        return new PlayerPacket(null);
+        return new PlayerPacket(new Player(new Position(x, y), dir, null));
     }
 
     @Override

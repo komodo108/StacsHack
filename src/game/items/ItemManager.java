@@ -46,4 +46,10 @@ public class ItemManager {
             if(i.equals(item)) items.remove(i);
         }
     }
+
+    public void deleteItemAt(Position position) {
+        for(IItem i : items) {
+            if(i.getPosition().equals(position)) items.remove(i);
+        }
+    }
 }
