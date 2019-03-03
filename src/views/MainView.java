@@ -97,8 +97,8 @@ public class MainView extends Observable implements Observer {
         frame.setSize(width, height);
         frame.setResizable(false);
 
-        if(mode) render = new Render(icebreaker, helper, map, manager);
-        else render = new Render(helper, icebreaker, map, manager);
+        if(mode) render = new Render(icebreaker, helper, map, manager, mode);
+        else render = new Render(helper, icebreaker, map, manager, mode);
         render.setBounds(0, 0, width, height);
 
         frame.add(render);
@@ -139,10 +139,10 @@ public class MainView extends Observable implements Observer {
                                 PlayerPacket playerPacket = (PlayerPacket) packet;
                                 if(mode) {
                                     helper = playerPacket.getPlayer();
-                                    render.setHelper(helper);
+                                    render.setOther(helper);
                                 } else {
                                     icebreaker = playerPacket.getPlayer();
-                                    render.setHelper(icebreaker);
+                                    render.setOther(icebreaker);
                                 }
                             } else if(packet instanceof WinPacket) {
                                 WinPacket winPacket = (WinPacket) packet;

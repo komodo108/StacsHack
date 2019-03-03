@@ -22,15 +22,16 @@ public class Render extends JPanel {
     private int scale = 64;
     private int current_size_x = 700, current_size_y = 700;
     private int camX, camY;
+    private boolean mode;
 
-
-    public Render(IPlayer icebreaker, IPlayer helper, Map map, ItemManager manager) {
+    public Render(IPlayer icebreaker, IPlayer helper, Map map, ItemManager manager, boolean mode) {
         this.icebreaker = icebreaker;
         this.helper = helper;
         icebreaker.setOther(helper);
         helper.setOther(icebreaker);
         this.map = map;
         this.manager = manager;
+        this.mode = mode;
 
         try {
             this.loader = new SpriteLoader(16, 16, 18, 18, "res/tiles.png", 0);
@@ -39,8 +40,10 @@ public class Render extends JPanel {
         }
     }
 
-    public void setHelper(IPlayer helper) {
-        this.helper = helper;
+    public void setOther(IPlayer helper) {
+        if(mode) {
+            this.helper = helper;
+        } else this.icebreaker = helper;
     }
 
     private void setup(Graphics g) {
@@ -49,8 +52,13 @@ public class Render extends JPanel {
         int offsetMinX = 0;
         int offsetMinY = 0;
 
-        camX = (icebreaker.getPosition().getX() * scale) - (current_size_x / 2);
-        camY = (icebreaker.getPosition().getY() * scale) - (current_size_y / 2);
+        if(mode) {
+            camX = (icebreaker.getPosition().getX() * scale) - (current_size_x / 2);
+            camY = (icebreaker.getPosition().getY() * scale) - (current_size_y / 2);
+        } else {
+            camX = (helper.getPosition().getX() * scale) - (current_size_x / 2);
+            camY = (helper.getPosition().getY() * scale) - (current_size_y / 2);
+        }
 
         if(camX > offsetMaxX) {
             camX = offsetMaxX;
@@ -83,7 +91,9 @@ public class Render extends JPanel {
     }
 
     private void drawMap(Graphics g) {
-        Position pos = icebreaker.getPosition();
+        Position pos;
+        if(mode) pos = icebreaker.getPosition();
+        else pos = helper.getPosition();
         int width = (int) Math.ceil((current_size_x / scale) / 2);
         int height = (int) Math.ceil((current_size_y / scale) / 2);
 
