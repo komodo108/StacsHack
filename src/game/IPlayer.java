@@ -14,6 +14,8 @@ public interface IPlayer {
 
     IItem getCurrentItem();
 
+    void setOther(IPlayer other);
+
     void askQ();
 
     void pickUpItem();
@@ -23,4 +25,6 @@ public interface IPlayer {
     void move(Direction direction);
 
     void addUpdater(Observer o);
+
+    boolean safeTile(Direction direction);
 }

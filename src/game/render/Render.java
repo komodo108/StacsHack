@@ -27,6 +27,8 @@ public class Render extends JPanel {
     public Render(IPlayer icebreaker, IPlayer helper, Map map, ItemManager manager) {
         this.icebreaker = icebreaker;
         this.helper = helper;
+        icebreaker.setOther(helper);
+        helper.setOther(icebreaker);
         this.map = map;
         this.manager = manager;
 

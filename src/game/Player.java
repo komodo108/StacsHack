@@ -14,6 +14,7 @@ public class Player extends Observable implements IPlayer {
     private Position pos;
     private Direction dir;
     private IItem item = null;
+    private IPlayer other = null;
     private ItemManager im = ItemManager.getInstance();
     private QuestionManager qm = QuestionManager.getInstance();
     private Map map = Map.getInstance();
@@ -21,6 +22,11 @@ public class Player extends Observable implements IPlayer {
     public Player(Position pos, Direction dir) {
         this.pos = pos;
         this.dir = dir;
+    }
+
+    @Override
+    public void setOther(IPlayer other) {
+        this.other = other;
     }
 
     @Override
@@ -107,35 +113,64 @@ public class Player extends Observable implements IPlayer {
 
     @Override
     public void move(Direction direction) {
+        if(safeTile(direction)) {
+            switch (direction) {
+                case RIGHT:
+                    dir = Direction.RIGHT;
+                    pos.set(pos.getX() + 1, pos.getY());
+                    notifyOthers();
+                    break;
+
+                case LEFT:
+                    dir = Direction.LEFT;
+                    pos.set(pos.getX() - 1, pos.getY());
+                    notifyOthers();
+                    break;
+
+                case DOWN:
+                    dir = Direction.DOWN;
+                    pos.set(pos.getX(), pos.getY() - 1);
+                    notifyOthers();
+                    break;
+
+                case UP:
+                    dir = Direction.UP;
+                    pos.set(pos.getX(), pos.getY() + 1);
+                    notifyOthers();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public boolean safeTile(Direction direction) {
         switch (direction) {
             case RIGHT:
-                if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).isTransparent()) {
-                    pos.set(pos.getX() + 1, pos.getY());
-                    dir = Direction.RIGHT;
-                    notifyOthers();
-                } break;
+                if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).isTransparent() &&
+                !other.getPosition().equals(new Position(pos.getX() + 1, pos.getY()))) {
+                    return true;
+                }
 
             case LEFT:
-                if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).isTransparent()) {
-                    pos.set(pos.getX() - 1, pos.getY());
-                    dir = Direction.LEFT;
-                    notifyOthers();
-                } break;
+                if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).isTransparent()  &&
+                        !other.getPosition().equals(new Position(pos.getX() - 1, pos.getY()))) {
+                    return true;
+                }
 
             case DOWN:
-                if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).isTransparent()) {
-                    pos.set(pos.getX(), pos.getY() + 1);
-                    dir = Direction.DOWN;
-                    notifyOthers();
-                } break;
+                if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).isTransparent() &&
+                        !other.getPosition().equals(new Position(pos.getX(), pos.getY() - 1))) {
+                    return true;
+                }
 
             case UP:
-                if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).isTransparent()) {
-                    pos.set(pos.getX(), pos.getY() - 1);
-                    dir = Direction.UP;
-                    notifyOthers();
-                } break;
+                if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).isTransparent() &&
+                        !other.getPosition().equals(new Position(pos.getX(), pos.getY() + 1))) {
+                    return true;
+                }
+                break;
         }
+        return false;
     }
 
     private void notifyOthers() {
