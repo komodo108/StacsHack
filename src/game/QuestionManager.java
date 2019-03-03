@@ -16,65 +16,46 @@ public class QuestionManager {
         return ourInstance;
     }
 
-    private JFrame frame;
-    private JLabel info, info_ip;
-    private JTextField ansField;
-    private JButton button, next;
-    private Questions q = Questions.getInstance();
-    private String answer;
-
-    private boolean isClient;
-    private int width = 340;
-    private int height = 340;
+    private String answer = "";
 
     public String ask() {
-        frame = new JFrame();
-        frame.setTitle("Question");
-        frame.setSize(width, height);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
+        System.out.println("areweheeeeeeeeeeere");
+        Questions q = Questions.getInstance();
+        JFrame frame = new JFrame("Button Example");
 
-        info = new JLabel();
-        info.setText(q.getRandomQuestion());
-        info.setBounds(20, 20, width - 40, 20);
-        info.setFont(new Font("Arial", Font.PLAIN, 18));
-        frame.add(info);
+        //submit button
+        JButton button=new JButton("Submit");
+        button.setBounds(100,100,140, 40);
 
-        ansField = new JTextField();
-        ansField.setBounds(20, 60, width - 40, 40);
-        ansField.setToolTipText("Enter your ansField:");
-        ansField.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent keyEvent) {
-                if (!ansField.getText().matches("[1-9.]+")) ansField.setText("");
-                button.setEnabled(ansField.getText().length() > 7);
-            }
+        //enter name label
+        JLabel label = new JLabel();
+        label.setText(q.getRandomQuestion());
+        label.setBounds(10, 10, 100, 100);
 
-            @Override
-            public void keyPressed(KeyEvent keyEvent) {
-            }
+        //textfield to enter name
+        JTextField textfield= new JTextField();
+        textfield.setBounds(110, 50, 130, 30);
 
-            @Override
-            public void keyReleased(KeyEvent keyEvent) {
-            }
-        });
-        frame.add(ansField);
-
-        button = new JButton("Submit Answer");
-        button.setBounds(20, 230, width - 100, 50);
-        button.setEnabled(!isClient);
+        //add to frame
+        frame.add(textfield);
+        frame.add(label);
         frame.add(button);
+        frame.setSize(300,300);
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // CLIENT
+
+        //action listener
         button.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                answer = ansField.getText();
+            public void actionPerformed(ActionEvent arg0) {
+                answer = textfield.getText();
                 frame.dispose();
             }
-
         });
+
+        System.out.println(answer);
 
         return answer;
     }
