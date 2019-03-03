@@ -29,8 +29,11 @@ public enum Tile {
 
     // Ice crystals
     ICE_CRYSTAL_1(15, false),
+    WALL_1(1,  false),
     ICE_CRYSTAL_2(16, false),
-    ICE_CRYSTAL_3(17, false);
+    WALL_2(1,  false),
+    ICE_CRYSTAL_3(17, false),
+    WALL_3(1,  false);
 
     private int sprite_pos;
     private boolean transparent;

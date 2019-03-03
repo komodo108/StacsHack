@@ -15,8 +15,8 @@ import java.util.Random;
 public class Render extends JPanel {
 
     private IPlayer icebreaker, helper;
-    private ItemManager manager = ItemManager.getInstance();
-    private Map map = Map.getInstance();
+    private ItemManager manager;
+    private Map map;
     private SpriteLoader loader;
 
     private int scale = 64;
@@ -24,9 +24,11 @@ public class Render extends JPanel {
     private int camX, camY;
 
 
-    public Render(IPlayer icebreaker, IPlayer helper) {
+    public Render(IPlayer icebreaker, IPlayer helper, Map map, ItemManager manager) {
         this.icebreaker = icebreaker;
         this.helper = helper;
+        this.map = map;
+        this.manager = manager;
 
         try {
             this.loader = new SpriteLoader(16, 16, 18, 18, "res/tiles.png", 0);
@@ -82,23 +84,26 @@ public class Render extends JPanel {
         Position pos = icebreaker.getPosition();
         int width = (int) Math.ceil((current_size_x / scale) / 2);
         int height = (int) Math.ceil((current_size_y / scale) / 2);
+
         for(int x = pos.getX() - (width * 2); x < pos.getX() + (width * 2); x++) {
-            for(int y = pos.getY() - (height * 2); height < pos.getY() + (width * 2); y++) {
+            for(int y = pos.getY() - (height * 2); y < pos.getY() + (width * 2); y++) {
                 if(x >= 0 && y >= 0 && x <= map.getXLength() && y <= map.getYLength()) {
                     switch(map.getTileAt(new Position(x, y))) {
                         case WALL:
                             g.drawImage(loader.getScaledSprites(Tile.WALL.getSprite()), x * scale, y * scale, null);
-                            switch(new Random().nextInt(7)) {
-                                case 1:
-                                    g.drawImage(loader.getScaledSprites(Tile.ICE_CRYSTAL_1.getSprite()), x * scale, y * scale, null);
-                                    break;
-                                case 2:
-                                    g.drawImage(loader.getScaledSprites(Tile.ICE_CRYSTAL_2.getSprite()), x * scale, y * scale, null);
-                                    break;
-                                case 3:
-                                    g.drawImage(loader.getScaledSprites(Tile.ICE_CRYSTAL_3.getSprite()), x * scale, y * scale, null);
-                                    break;
-                            } break;
+                            break;
+                        case WALL_1:
+                            g.drawImage(loader.getScaledSprites(Tile.WALL.getSprite()), x * scale, y * scale, null);
+                            g.drawImage(loader.getScaledSprites(Tile.ICE_CRYSTAL_1.getSprite()), x * scale, y * scale, null);
+                            break;
+                        case WALL_2:
+                            g.drawImage(loader.getScaledSprites(Tile.WALL.getSprite()), x * scale, y * scale, null);
+                            g.drawImage(loader.getScaledSprites(Tile.ICE_CRYSTAL_2.getSprite()), x * scale, y * scale, null);
+                            break;
+                        case WALL_3:
+                            g.drawImage(loader.getScaledSprites(Tile.WALL.getSprite()), x * scale, y * scale, null);
+                            g.drawImage(loader.getScaledSprites(Tile.ICE_CRYSTAL_3.getSprite()), x * scale, y * scale, null);
+                            break;
                         case QUESTION_ICE:
                             g.drawImage(loader.getScaledSprites(Tile.QUESTION_ICE.getSprite()), x * scale, y * scale, null);
                             break;
@@ -136,32 +141,32 @@ public class Render extends JPanel {
 
     private void drawPlayers(Graphics g) {
         switch(icebreaker.getDirection()) {
-            case UP:
-                g.drawImage(loader.getScaledSprites(Tile.PLAYER_A_UP.getSprite()), icebreaker.getPosition().getX() * scale, icebreaker.getPosition().getY() * scale, null);
-                break;
             case DOWN:
                 g.drawImage(loader.getScaledSprites(Tile.PLAYER_A_DOWN.getSprite()), icebreaker.getPosition().getX() * scale, icebreaker.getPosition().getY() * scale, null);
                 break;
-            case LEFT:
-                g.drawImage(loader.getScaledSprites(Tile.PLAYER_A_LEFT.getSprite()), icebreaker.getPosition().getX() * scale, icebreaker.getPosition().getY() * scale, null);
+            case UP:
+                g.drawImage(loader.getScaledSprites(Tile.PLAYER_A_UP.getSprite()), icebreaker.getPosition().getX() * scale, icebreaker.getPosition().getY() * scale, null);
                 break;
             case RIGHT:
                 g.drawImage(loader.getScaledSprites(Tile.PLAYER_A_RIGHT.getSprite()), icebreaker.getPosition().getX() * scale, icebreaker.getPosition().getY() * scale, null);
                 break;
+            case LEFT:
+                g.drawImage(loader.getScaledSprites(Tile.PLAYER_A_LEFT.getSprite()), icebreaker.getPosition().getX() * scale, icebreaker.getPosition().getY() * scale, null);
+                break;
         }
 
         switch(helper.getDirection()) {
-            case UP:
-                g.drawImage(loader.getScaledSprites(Tile.PLAYER_B_UP.getSprite()), helper.getPosition().getX() * scale, helper.getPosition().getY() * scale, null);
-                break;
             case DOWN:
                 g.drawImage(loader.getScaledSprites(Tile.PLAYER_B_DOWN.getSprite()), helper.getPosition().getX() * scale, helper.getPosition().getY() * scale, null);
                 break;
-            case LEFT:
-                g.drawImage(loader.getScaledSprites(Tile.PLAYER_B_LEFT.getSprite()), helper.getPosition().getX() * scale, helper.getPosition().getY() * scale, null);
+            case UP:
+                g.drawImage(loader.getScaledSprites(Tile.PLAYER_B_UP.getSprite()), helper.getPosition().getX() * scale, helper.getPosition().getY() * scale, null);
                 break;
             case RIGHT:
                 g.drawImage(loader.getScaledSprites(Tile.PLAYER_B_RIGHT.getSprite()), helper.getPosition().getX() * scale, helper.getPosition().getY() * scale, null);
+                break;
+            case LEFT:
+                g.drawImage(loader.getScaledSprites(Tile.PLAYER_B_LEFT.getSprite()), helper.getPosition().getX() * scale, helper.getPosition().getY() * scale, null);
                 break;
         }
     }

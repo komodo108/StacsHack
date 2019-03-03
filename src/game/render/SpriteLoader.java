@@ -28,7 +28,7 @@ public class SpriteLoader {
      * @throws IOException if <code>path</code> cannot be found or accessed
      */
     public SpriteLoader(int width, int height, int rows, int columns, String path, int override_scale) throws IOException {
-        int scalefac = (override_scale > 0) ? override_scale : 2;
+        int scalefac = (override_scale > 0) ? override_scale : 4;
 
         BufferedImage spriteSheet = ImageIO.read(new File(path));
         BufferedImage scaledSpriteSheet = new BufferedImage(spriteSheet.getWidth() * scalefac, spriteSheet.getHeight() * scalefac,

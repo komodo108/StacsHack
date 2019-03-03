@@ -17,7 +17,6 @@ import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
@@ -61,8 +60,9 @@ public class MainView extends Observable implements Observer {
             map = Map.getInstance();
             manager = ItemManager.getInstance();
 
-            icebreaker = new Player(new Position(1, 1), Direction.DOWN);
-            helper = new Player(new Position(2, 1), Direction.DOWN);
+            icebreaker = new Player(new Position(1, 1), Direction.DOWN, null);
+            helper = new Player(new Position(2, 1), Direction.DOWN, icebreaker);
+            icebreaker.updatePlayer2(helper);
             icebreaker.addUpdater(this);
 
             listen = new KeyListen(icebreaker);
@@ -82,8 +82,9 @@ public class MainView extends Observable implements Observer {
             map = Map.getInstance();
             manager = ItemManager.getInstance();
 
-            icebreaker = new Player(new Position(2, 2), Direction.DOWN);
-            helper = new Player(new Position(1, 1), Direction.DOWN);
+            icebreaker = new Player(new Position(2, 1), Direction.DOWN, null);
+            helper = new Player(new Position(1, 1), Direction.DOWN, icebreaker);
+            icebreaker.updatePlayer2(helper);
             icebreaker.addUpdater(this);
 
             listen = new KeyListen(icebreaker);
@@ -93,12 +94,13 @@ public class MainView extends Observable implements Observer {
     }
 
     public void makeFrame() {
-        render = new Render(icebreaker, helper);
-        render.setBounds(0, 0, width, height);
-
         frame = new JFrame("Cool Boiz");
         frame.setSize(width, height);
         frame.setResizable(false);
+
+        if(mode) render = new Render(icebreaker, helper, map, manager);
+        else render = new Render(helper, icebreaker, map, manager);
+        render.setBounds(0, 0, width, height);
 
         frame.add(render);
 
@@ -175,9 +177,5 @@ public class MainView extends Observable implements Observer {
             render.paintComponents(render.getGraphics());
             render.repaint();
         });
-
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) { }
     }
 }

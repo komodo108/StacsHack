@@ -5,6 +5,7 @@ import game.helper.Position;
 import game.items.ItemManager;
 
 import java.io.*;
+import java.util.Random;
 
 public class Map {
     private static Map ourInstance = new Map();
@@ -71,18 +72,36 @@ public class Map {
                             break;
                         case 'F': // Fire item
                             items.setItemAt(new Position(i, j), Tile.FIRE);
+                            tiles[i][j] = Tile.FLOOR;
                             break;
                         case 'f': // Flask item
                             items.setItemAt(new Position(i, j), Tile.FLASK);
+                            tiles[i][j] = Tile.FLOOR;
                             break;
                         case 'P': // Pick item
                             items.setItemAt(new Position(i, j), Tile.PICK);
+                            tiles[i][j] = Tile.FLOOR;
                         case 'X': // End final tile
                             tiles[i][j] = Tile.FINAL;
                             break;
                     }
                 }
             } br.close();
+
+            for(int i = 0; i < getXLength(); i++) {
+                for(int j = 0; j < getYLength(); j++) {
+                    if(tiles[i][j].equals(Tile.WALL)) {
+                        int random = new Random().nextInt(8);
+                        if(random == 1) {
+                            tiles[i][j] = Tile.WALL_1;
+                        } else if(random == 2) {
+                            tiles[i][j] = Tile.WALL_2;
+                        } else if(random == 3) {
+                            tiles[i][j] = Tile.WALL_3;
+                        }
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
