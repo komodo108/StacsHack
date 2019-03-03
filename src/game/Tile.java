@@ -4,45 +4,44 @@ public enum Tile {
     // TODO: Change
 
     // game.Player 1
-    PLAYER_A_UP(0, 0, false),
-    PLAYER_A_DOWN(0, 0, false),
-    PLAYER_A_LEFT(0, 0, false),
-    PLAYER_A_RIGHT(0, 0, false),
+    PLAYER_A_UP(9,  false),
+    PLAYER_A_DOWN(10,  false),
+    PLAYER_A_LEFT(8,  false),
+    PLAYER_A_RIGHT(7,  false),
 
     // game.Player 2
-    PLAYER_B_UP(0, 0, false),
-    PLAYER_B_DOWN(0, 0, false),
-    PLAYER_B_LEFT(0, 0, false),
-    PLAYER_B_RIGHT(0, 0, false),
+    PLAYER_B_UP(13,  false),
+    PLAYER_B_DOWN(14,  false),
+    PLAYER_B_LEFT(12,  false),
+    PLAYER_B_RIGHT(11,  false),
 
     // Ice breaking tools
-    FIRE(0, 0, false),
-    PICK(0, 0, false),
-    FLASK(0, 0, false),
+    FIRE(4,  false),
+    PICK(5,  false),
+    FLASK(6,  false),
 
     // Map blocks
-    WALL(0, 0, false),
-    FLOOR(0, 0, true),
-    QUESTION_ICE(0, 0, false),
-    QUESTION(0, 0, true),
-    FINAL(0, 0, true);
+    WALL(1,  false),
+    FLOOR(0,  true),
+    QUESTION_ICE(2,  false),
+    QUESTION(3, true),
+    FINAL(19,  true),
 
-    private int tile_x_pos;
-    private int tile_y_pos;
+    // Ice crystals
+    ICE_CRYSTAL_1(15, false),
+    ICE_CRYSTAL_2(16, false),
+    ICE_CRYSTAL_3(17, false);
+
+    private int sprite_pos;
     private boolean transparent;
 
-    Tile(int tile_x_pos, int tile_y_pos, boolean transparent) {
-        this.tile_x_pos = tile_x_pos;
-        this.tile_y_pos = tile_y_pos;
+    Tile(int sprite_pos, boolean transparent) {
+        this.sprite_pos = sprite_pos;
         this.transparent = transparent;
     }
 
-    public int getX() {
-        return tile_x_pos;
-    }
-
-    public int getY() {
-        return tile_y_pos;
+    public int getSprite() {
+        return sprite_pos;
     }
 
     public boolean isTransparent() {

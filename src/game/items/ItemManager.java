@@ -31,6 +31,10 @@ public class ItemManager {
         }
     }
 
+    public ArrayList<IItem> getItems() {
+        return items;
+    }
+
     public IItem getItemAt(Position position) {
         for(IItem item : items) {
             if(item.getPosition().equals(position)) return item;

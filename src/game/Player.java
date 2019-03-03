@@ -1,14 +1,15 @@
 package game;
 
-import game.IPlayer;
-import game.Tile;
 import game.helper.Direction;
 import game.helper.Position;
 import game.items.IItem;
 import game.items.ItemManager;
 import game.map.Map;
 
-public class Player implements IPlayer {
+import java.util.Observable;
+import java.util.Observer;
+
+public class Player extends Observable implements IPlayer {
 
     private Position pos;
     private Direction dir;
@@ -46,24 +47,28 @@ public class Player implements IPlayer {
                     if (im.getItemAt(new Position(pos.getX() + 1, pos.getY())) != null) {
                         item = im.getItemAt(new Position(pos.getX() + 1, pos.getY()));
                         im.deleteItem(item);
+                        notifyOthers();
                     } break;
 
                 case RIGHT:
                     if (im.getItemAt(new Position(pos.getX() - 1, pos.getY())) != null) {
                         item = im.getItemAt(new Position(pos.getX() - 1, pos.getY()));
                         im.deleteItem(item);
+                        notifyOthers();
                     } break;
 
                 case UP:
                     if (im.getItemAt(new Position(pos.getX(), pos.getY() + 1)) != null) {
                         item = im.getItemAt(new Position(pos.getX(), pos.getY() + 1));
                         im.deleteItem(item);
+                        notifyOthers();
                     } break;
 
                 case DOWN:
                     if (im.getItemAt(new Position(pos.getX(), pos.getY() - 1)) != null) {
                         item = im.getItemAt(new Position(pos.getX(), pos.getY() - 1));
                         im.deleteItem(item);
+                        notifyOthers();
                     } break;
             }
         }
@@ -74,12 +79,16 @@ public class Player implements IPlayer {
     public void breakIce() {
         if (new Position(pos.getX() - 1, pos.getY()).equals(Tile.QUESTION_ICE)) {
             map.updateTileAt(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION);
+            notifyOthers();
         } else if (new Position(pos.getX() + 1, pos.getY()).equals(Tile.QUESTION_ICE)) {
             map.updateTileAt(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION);
+            notifyOthers();
         } else if (new Position(pos.getX(), pos.getY() + 1).equals(Tile.QUESTION_ICE)) {
             map.updateTileAt(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION);
+            notifyOthers();
         } else if (new Position(pos.getX(), pos.getY() - 1).equals(Tile.QUESTION_ICE)) {
             map.updateTileAt(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION);
+            notifyOthers();
         }
     }
 
@@ -90,25 +99,39 @@ public class Player implements IPlayer {
                 if (!map.getTileAt(new Position(pos.getX() + 1, pos.getY())).isTransparent()) {
                     pos.set(pos.getX() + 1, pos.getY());
                     dir = Direction.LEFT;
+                    notifyOthers();
                 } break;
 
             case RIGHT:
                 if (!map.getTileAt(new Position(pos.getX() - 1, pos.getY())).isTransparent()) {
                     pos.set(pos.getX() - 1, pos.getY());
                     dir = Direction.RIGHT;
+                    notifyOthers();
                 } break;
 
             case UP:
                 if (!map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).isTransparent()) {
                     pos.set(pos.getX(), pos.getY() + 1);
                     dir = Direction.UP;
+                    notifyOthers();
                 } break;
 
             case DOWN:
                 if (!map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).isTransparent()) {
                     pos.set(pos.getX(), pos.getY() - 1);
                     dir = Direction.DOWN;
+                    notifyOthers();
                 } break;
         }
+    }
+
+    private void notifyOthers() {
+        setChanged();
+        notifyObservers();
+    }
+
+    @Override
+    public void addUpdater(Observer o) {
+        addObserver(o);
     }
 }

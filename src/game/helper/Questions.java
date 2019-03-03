@@ -10,7 +10,7 @@ public class Questions {
         return ourInstance;
     }
 
-    private File question_file = new File("../res/questions.txt");
+    private File question_file = new File("res/questions.txt");
     private ArrayList<String> questions = new ArrayList<>();
     private ArrayList seen = new ArrayList();
 

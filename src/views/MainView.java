@@ -1,6 +1,9 @@
 package views;
 
 import game.IPlayer;
+import game.Player;
+import game.helper.Direction;
+import game.helper.Position;
 import game.items.ItemManager;
 import game.map.Map;
 import game.render.Render;
@@ -54,6 +57,15 @@ public class MainView extends Observable implements Observer {
             s = new Socket(ip, 2727);
             write = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
             read = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+            map = Map.getInstance();
+            manager = ItemManager.getInstance();
+
+            icebreaker = new Player(new Position(1, 1), Direction.DOWN);
+            helper = new Player(new Position(2, 1), Direction.DOWN);
+            icebreaker.addUpdater(this);
+
+            listen = new KeyListen(icebreaker);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,6 +78,15 @@ public class MainView extends Observable implements Observer {
             s = serverSocket.accept();
             write = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
             read = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+            map = Map.getInstance();
+            manager = ItemManager.getInstance();
+
+            icebreaker = new Player(new Position(2, 2), Direction.DOWN);
+            helper = new Player(new Position(1, 1), Direction.DOWN);
+            icebreaker.addUpdater(this);
+
+            listen = new KeyListen(icebreaker);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -150,12 +171,13 @@ public class MainView extends Observable implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                render.paintComponents(render.getGraphics());
-                render.repaint();
-            }
+        SwingUtilities.invokeLater(() -> {
+            render.paintComponents(render.getGraphics());
+            render.repaint();
         });
+
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) { }
     }
 }

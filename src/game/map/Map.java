@@ -15,9 +15,9 @@ public class Map {
     private Tile[][] tiles;
     private ItemManager items = ItemManager.getInstance();
 
-    private File map_number_file = new File("../res/map_number.txt");
+    private File map_number_file = new File("res/map_number.txt");
     private File map_desc;
-    private int map_number = -1;
+    private int map_number = 1;
     private int max = 1;
 
     private Map() {
@@ -27,16 +27,16 @@ public class Map {
             if(map_number == -1) {
                 // Handler reading what map we are on
                 BufferedReader br = new BufferedReader(new FileReader(map_number_file));
-                BufferedWriter bw = new BufferedWriter(new FileWriter(map_number_file, false));
                 number = Integer.parseInt(br.readLine());
 
+                BufferedWriter bw = new BufferedWriter(new FileWriter(map_number_file, false));
                 if (number < max) {
                     // Increment
-                    bw.write(number + 1);
+                    bw.write("" + number + 1);
                     bw.flush();
                 } else {
                     // Reset to one
-                    bw.write(1);
+                    bw.write("" + 1);
                     bw.flush();
                 }
 
@@ -44,7 +44,7 @@ public class Map {
                 br.close();
             }
 
-            map_desc = new File("../res/map_" + number + ".map");
+            map_desc = new File("res/map_" + number + ".map");
             BufferedReader br = new BufferedReader(new FileReader(map_desc));
 
             // Load it in from a file
