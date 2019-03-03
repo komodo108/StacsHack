@@ -181,7 +181,9 @@ public class Player extends Observable implements IPlayer {
 
         if (map.getTileAt(p).equals(Tile.QUESTION)) {
             System.out.println("something");
-            qm.ask();
+            answer =  qm.ask();
+            System.out.println(answer);
+            map.updateTileAt(p, Tile.FLOOR);
         }
     }
 

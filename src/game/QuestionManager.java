@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class QuestionManager {
     private static QuestionManager ourInstance = new QuestionManager();
@@ -15,13 +13,14 @@ public class QuestionManager {
     public static QuestionManager getInstance() {
         return ourInstance;
     }
+    private Questions q = Questions.getInstance();
 
     private String answer = "";
 
     public String ask() {
         System.out.println("areweheeeeeeeeeeere");
-        Questions q = Questions.getInstance();
         JFrame frame = new JFrame("Button Example");
+        frame.setSize(500, 400);
 
         //submit button
         JButton button=new JButton("Submit");
@@ -30,11 +29,11 @@ public class QuestionManager {
         //enter name label
         JLabel label = new JLabel();
         label.setText(q.getRandomQuestion());
-        label.setBounds(10, 10, 100, 100);
+        label.setBounds(10, 10, 300, 100);
 
         //textfield to enter name
-        JTextField textfield= new JTextField();
-        textfield.setBounds(110, 50, 130, 30);
+        JTextField textfield = new JTextField();
+        textfield.setBounds(180, 50, 170, 30);
 
         //add to frame
         frame.add(textfield);
@@ -51,11 +50,11 @@ public class QuestionManager {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 answer = textfield.getText();
+                System.out.println(answer);
                 frame.dispose();
             }
         });
 
-        System.out.println(answer);
 
         return answer;
     }

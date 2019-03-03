@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class Questions {
     private static Questions ourInstance = new Questions();
+
     public static Questions getInstance() {
         return ourInstance;
     }
@@ -19,22 +20,19 @@ public class Questions {
             BufferedReader read = new BufferedReader(new FileReader(question_file));
             String line;
 
-            while((line = read.readLine()) != null) {
+            while ((line = read.readLine()) != null) {
                 questions.add(line);
-            } read.close();
+            }
+            read.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public String getRandomQuestion() {
+        System.out.println("????? grq");
         Random random = new Random();
         int index = random.nextInt(questions.size());
-        int asked = 0;
-
-        while(!seen.contains(index) && asked < questions.size() / 2) {
-            index = random.nextInt(questions.size());
-        } seen.add(index);
         return questions.get(index);
     }
 }
