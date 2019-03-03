@@ -6,6 +6,7 @@ import game.items.IItem;
 import game.items.ItemManager;
 import game.map.Map;
 
+import java.io.BufferedWriter;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,10 +19,12 @@ public class Player extends Observable implements IPlayer {
     private ItemManager im = ItemManager.getInstance();
     private QuestionManager qm = QuestionManager.getInstance();
     private Map map = Map.getInstance();
+    private BufferedWriter write;
 
-    public Player(Position pos, Direction dir) {
+    public Player(Position pos, Direction dir, BufferedWriter write) {
         this.pos = pos;
         this.dir = dir;
+        this.write = write;
     }
 
     @Override
@@ -113,32 +116,34 @@ public class Player extends Observable implements IPlayer {
 
     @Override
     public void move(Direction direction) {
-        if(safeTile(direction)) {
-            switch (direction) {
-                case RIGHT:
+        switch (direction) {
+            case RIGHT:
+                if(safeTile(direction)) {
                     dir = Direction.RIGHT;
                     pos.set(pos.getX() + 1, pos.getY());
                     notifyOthers();
-                    break;
+                } break;
 
-                case LEFT:
+            case LEFT:
+                if(safeTile(direction)) {
                     dir = Direction.LEFT;
                     pos.set(pos.getX() - 1, pos.getY());
                     notifyOthers();
-                    break;
+                } break;
 
-                case DOWN:
+            case DOWN:
+                if(safeTile(direction)) {
                     dir = Direction.DOWN;
-                    pos.set(pos.getX(), pos.getY() - 1);
-                    notifyOthers();
-                    break;
-
-                case UP:
-                    dir = Direction.UP;
                     pos.set(pos.getX(), pos.getY() + 1);
                     notifyOthers();
-                    break;
-            }
+                } break;
+
+            case UP:
+                if(safeTile(direction)) {
+                    dir = Direction.UP;
+                    pos.set(pos.getX(), pos.getY() - 1);
+                    notifyOthers();
+                } break;
         }
     }
 
@@ -149,26 +154,25 @@ public class Player extends Observable implements IPlayer {
                 if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).isTransparent() &&
                 !other.getPosition().equals(new Position(pos.getX() + 1, pos.getY()))) {
                     return true;
-                }
+                } break;
 
             case LEFT:
                 if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).isTransparent()  &&
                         !other.getPosition().equals(new Position(pos.getX() - 1, pos.getY()))) {
                     return true;
-                }
+                } break;
 
             case DOWN:
-                if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).isTransparent() &&
-                        !other.getPosition().equals(new Position(pos.getX(), pos.getY() - 1))) {
-                    return true;
-                }
-
-            case UP:
                 if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).isTransparent() &&
                         !other.getPosition().equals(new Position(pos.getX(), pos.getY() + 1))) {
                     return true;
-                }
-                break;
+                } break;
+
+            case UP:
+                if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).isTransparent() &&
+                        !other.getPosition().equals(new Position(pos.getX(), pos.getY() - 1))) {
+                    return true;
+                } break;
         }
         return false;
     }

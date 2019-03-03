@@ -2,6 +2,7 @@ package views;
 
 import game.IPlayer;
 import game.Player;
+import game.Tile;
 import game.helper.Direction;
 import game.helper.Position;
 import game.items.ItemManager;
@@ -11,7 +12,7 @@ import listener.KeyListen;
 import network.CorruptedPacketException;
 import network.IPacket;
 import network.Packet;
-import network.types.HelloPacket;
+import network.types.*;
 
 import javax.swing.*;
 import java.io.*;
@@ -60,9 +61,8 @@ public class MainView extends Observable implements Observer {
             map = Map.getInstance();
             manager = ItemManager.getInstance();
 
-            icebreaker = new Player(new Position(1, 1), Direction.DOWN);
-            helper = new Player(new Position(2, 1), Direction.DOWN);
-//            icebreaker.updatePlayer2(helper);
+            icebreaker = new Player(new Position(1, 1), Direction.DOWN, write);
+            helper = new Player(new Position(2, 1), Direction.DOWN, null);
             icebreaker.addUpdater(this);
 
             listen = new KeyListen(icebreaker);
@@ -82,9 +82,8 @@ public class MainView extends Observable implements Observer {
             map = Map.getInstance();
             manager = ItemManager.getInstance();
 
-            icebreaker = new Player(new Position(2, 1), Direction.DOWN);
-            helper = new Player(new Position(1, 1), Direction.DOWN);
-//            icebreaker.updatePlayer2(helper);
+            icebreaker = new Player(new Position(2, 1), Direction.DOWN, null);
+            helper = new Player(new Position(1, 1), Direction.DOWN, write);
             icebreaker.addUpdater(this);
 
             listen = new KeyListen(icebreaker);
@@ -127,7 +126,32 @@ public class MainView extends Observable implements Observer {
                             System.out.println("Received a packet of type " + packet.getType());
 
                             // TODO: Packets
-                            if(packet instanceof HelloPacket) { }
+                            if(packet instanceof HelloPacket) {
+                                /* Do nothing */
+                            } else if(packet instanceof ItemRemovePacket) {
+                                manager.deleteItemAt(((ItemRemovePacket) packet).getItemPosition());
+                            } else if(packet instanceof MapPacket) {
+                                MapPacket mapPacket = (MapPacket) packet;
+                                map.updateTileAt(mapPacket.getPosition(), mapPacket.getTile());
+
+                                /* TODO: Store questions */
+                            } else if(packet instanceof PlayerPacket) {
+                                PlayerPacket playerPacket = (PlayerPacket) packet;
+                                if(mode) {
+                                    helper = playerPacket.getPlayer();
+                                    render.setHelper(helper);
+                                } else {
+                                    icebreaker = playerPacket.getPlayer();
+                                    render.setHelper(icebreaker);
+                                }
+                            } else if(packet instanceof WinPacket) {
+                                WinPacket winPacket = (WinPacket) packet;
+                                if(winPacket.getWin()) {
+                                    System.out.println("You Win!!");
+                                } else {
+                                    System.out.println("You lose ;-;");
+                                } System.exit(0);
+                            }
                         } catch (IOException | CorruptedPacketException e) {
                             e.printStackTrace();
                         } catch (NullPointerException e) {
