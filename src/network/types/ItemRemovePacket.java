@@ -2,24 +2,24 @@ package network.types;
 
 import game.IPlayer;
 import game.helper.Direction;
+import game.helper.Position;
+import game.items.IItem;
 import network.Packet;
 import network.PacketType;
 
-public class PlayerPacket extends Packet {
-    private IPlayer player;
+public class ItemRemovePacket extends Packet {
+    private Position item_position;
 
-    public PlayerPacket(IPlayer player) {
-        this.player = player;
+    public ItemRemovePacket(Position item_position) {
+        this.item_position = item_position;
     }
 
-    public IPlayer getPlayer() {
-        return player;
+    public Position getItemPosition() {
+        return item_position;
     }
 
-    public static PlayerPacket fromData(String data) {
-        String type = null;
+    public static ItemRemovePacket fromData(String data) {
         int x = 0, y = 0;
-        String direction = null;
 
         for (String line : data.split(",")) {
             String[] keyValue = line.split(": ");
@@ -32,14 +32,10 @@ public class PlayerPacket extends Packet {
                 case "Y":
                     y = Integer.valueOf(value);
                     break;
-                case "DIRECTION":
-                    direction = value;
-                    break;
             }
         }
 
-        Direction dir = Direction.getFrom(direction);
-        return new PlayerPacket(null);
+        return new ItemRemovePacket(new Position(x, y));
     }
 
     @Override
@@ -51,8 +47,7 @@ public class PlayerPacket extends Packet {
     public String asData() {
         //We have the following to work with:
 
-        return "X: " + player.getPosition().getX() + "," +
-               "Y: " + player.getPosition().getY() + "," +
-               "DIRECTION: " + player.getDirection().getAsString();
+        return "X: " + item_position.getX() + "," +
+                "Y: " + item_position.getY();
     }
 }
