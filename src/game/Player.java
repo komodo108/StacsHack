@@ -20,6 +20,7 @@ public class Player extends Observable implements IPlayer {
     private QuestionManager qm = QuestionManager.getInstance();
     private Map map = Map.getInstance();
     private BufferedWriter write;
+    private String answer;
 
     public Player(Position pos, Direction dir, BufferedWriter write) {
         this.pos = pos;
@@ -57,28 +58,32 @@ public class Player extends Observable implements IPlayer {
                         item = im.getItemAt(new Position(pos.getX() + 1, pos.getY()));
                         im.deleteItem(item);
                         notifyOthers();
-                    } break;
+                    }
+                    break;
 
                 case LEFT:
                     if (im.getItemAt(new Position(pos.getX() - 1, pos.getY())) != null) {
                         item = im.getItemAt(new Position(pos.getX() - 1, pos.getY()));
                         im.deleteItem(item);
                         notifyOthers();
-                    } break;
+                    }
+                    break;
 
                 case DOWN:
                     if (im.getItemAt(new Position(pos.getX(), pos.getY() + 1)) != null) {
                         item = im.getItemAt(new Position(pos.getX(), pos.getY() + 1));
                         im.deleteItem(item);
                         notifyOthers();
-                    } break;
+                    }
+                    break;
 
                 case UP:
                     if (im.getItemAt(new Position(pos.getX(), pos.getY() - 1)) != null) {
                         item = im.getItemAt(new Position(pos.getX(), pos.getY() - 1));
                         im.deleteItem(item);
                         notifyOthers();
-                    } break;
+                    }
+                    break;
             }
         }
     }
@@ -103,14 +108,28 @@ public class Player extends Observable implements IPlayer {
 
     @Override
     public void askQ() {
-        if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).equals(Tile.QUESTION)) {
-            notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).equals(Tile.QUESTION)) {
-            notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).equals(Tile.QUESTION)) {
-            notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).equals(Tile.QUESTION)) {
-            notifyOthers();
+        Position p = null;
+        switch(getDirection()) {
+            case RIGHT:
+                p = new Position(pos.getX() + 1, pos.getY());
+            break;
+
+            case LEFT:
+                p = new Position(pos.getX() - 1, pos.getY());
+                break;
+
+            case DOWN:
+                p = new Position(pos.getX(), pos.getY() - 1);
+                break;
+
+            case UP:
+                p = new Position(pos.getX(), pos.getY() + 1);
+                break;
+        }
+
+        if (map.getTileAt(p).equals(Tile.QUESTION)) {
+            System.out.println("something");
+            qm.ask();
         }
     }
 
@@ -118,32 +137,36 @@ public class Player extends Observable implements IPlayer {
     public void move(Direction direction) {
         switch (direction) {
             case RIGHT:
-                if(safeTile(direction)) {
+                if (safeTile(direction)) {
                     dir = Direction.RIGHT;
                     pos.set(pos.getX() + 1, pos.getY());
                     notifyOthers();
-                } break;
+                }
+                break;
 
             case LEFT:
-                if(safeTile(direction)) {
+                if (safeTile(direction)) {
                     dir = Direction.LEFT;
                     pos.set(pos.getX() - 1, pos.getY());
                     notifyOthers();
-                } break;
+                }
+                break;
 
             case DOWN:
-                if(safeTile(direction)) {
+                if (safeTile(direction)) {
                     dir = Direction.DOWN;
                     pos.set(pos.getX(), pos.getY() + 1);
                     notifyOthers();
-                } break;
+                }
+                break;
 
             case UP:
-                if(safeTile(direction)) {
+                if (safeTile(direction)) {
                     dir = Direction.UP;
                     pos.set(pos.getX(), pos.getY() - 1);
                     notifyOthers();
-                } break;
+                }
+                break;
         }
     }
 
@@ -152,27 +175,35 @@ public class Player extends Observable implements IPlayer {
         switch (direction) {
             case RIGHT:
                 if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).isTransparent() &&
-                !other.getPosition().equals(new Position(pos.getX() + 1, pos.getY()))) {
+                        !other.getPosition().equals(new Position(pos.getX() + 1, pos.getY())) &&
+                                im.getItemAt(new Position(pos.getX() + 1, pos.getY())) == null) {
                     return true;
-                } break;
+                }
+                break;
 
             case LEFT:
-                if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).isTransparent()  &&
-                        !other.getPosition().equals(new Position(pos.getX() - 1, pos.getY()))) {
+                if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).isTransparent() &&
+                        !other.getPosition().equals(new Position(pos.getX() - 1, pos.getY())) &&
+                        im.getItemAt(new Position(pos.getX() - 1, pos.getY())) == null) {
                     return true;
-                } break;
+                }
+                break;
 
             case DOWN:
                 if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).isTransparent() &&
-                        !other.getPosition().equals(new Position(pos.getX(), pos.getY() + 1))) {
+                        !other.getPosition().equals(new Position(pos.getX(), pos.getY() + 1)) &&
+                        im.getItemAt(new Position(pos.getX(), pos.getY() + 1)) == null) {
                     return true;
-                } break;
+                }
+                break;
 
             case UP:
                 if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).isTransparent() &&
-                        !other.getPosition().equals(new Position(pos.getX(), pos.getY() - 1))) {
+                        !other.getPosition().equals(new Position(pos.getX(), pos.getY() - 1)) &&
+                        im.getItemAt(new Position(pos.getX(), pos.getY() - 1)) == null) {
                     return true;
-                } break;
+                }
+                break;
         }
         return false;
     }
