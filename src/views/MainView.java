@@ -1,6 +1,8 @@
 package views;
 
 import game.IPlayer;
+import game.items.ItemManager;
+import game.map.Map;
 import game.render.Render;
 import listener.KeyListen;
 import network.CorruptedPacketException;
@@ -32,6 +34,8 @@ public class MainView extends Observable implements Observer {
 
     private Socket s;
     private IPlayer icebreaker, helper;
+    private ItemManager manager;
+    private Map map;
     private BufferedReader read;
     private BufferedWriter write;
 

@@ -3,13 +3,13 @@ package game;
 public enum Tile {
     // TODO: Change
 
-    // Player 1
+    // game.Player 1
     PLAYER_A_UP(0, 0, false),
     PLAYER_A_DOWN(0, 0, false),
     PLAYER_A_LEFT(0, 0, false),
     PLAYER_A_RIGHT(0, 0, false),
 
-    // Player 2
+    // game.Player 2
     PLAYER_B_UP(0, 0, false),
     PLAYER_B_DOWN(0, 0, false),
     PLAYER_B_LEFT(0, 0, false),

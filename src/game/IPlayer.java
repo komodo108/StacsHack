@@ -17,6 +17,5 @@ public interface IPlayer {
 
     void breakIce();
 
-    void move();
-    // TODO;
+    void move(Direction direction);
 }
