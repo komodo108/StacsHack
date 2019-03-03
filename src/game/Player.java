@@ -16,17 +16,10 @@ public class Player extends Observable implements IPlayer {
     private IItem item = null;
     private ItemManager im = ItemManager.getInstance();
     private Map map = Map.getInstance();
-    private IPlayer other;
 
-    public Player(Position pos, Direction dir, IPlayer other) {
+    public Player(Position pos, Direction dir) {
         this.pos = pos;
         this.dir = dir;
-        this.other = other;
-    }
-
-    @Override
-    public void updatePlayer2(IPlayer player) {
-        this.other = player;
     }
 
     @Override
@@ -47,9 +40,7 @@ public class Player extends Observable implements IPlayer {
     //direction-dependent
     @Override
     public void pickUpItem() {
-        System.out.println("tryna get the item...");
         if (item == null) {
-            System.out.println("we're in the switch..");
             switch (dir) {
                 case RIGHT:
                     if (im.getItemAt(new Position(pos.getX() + 1, pos.getY())) != null) {
@@ -85,21 +76,16 @@ public class Player extends Observable implements IPlayer {
     //direction-dependent
     @Override
     public void breakIce() {
-        System.out.println("tryna break the ice...");
         if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
-            System.out.println("WE HERE BOI1");
             map.updateTileAt(new Position(pos.getX() - 1, pos.getY()), Tile.QUESTION);
             notifyOthers();
         } else if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).equals(Tile.QUESTION_ICE)) {
-            System.out.println("WE HERE BOI2");
             map.updateTileAt(new Position(pos.getX() + 1, pos.getY()), Tile.QUESTION);
             notifyOthers();
         } else if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).equals(Tile.QUESTION_ICE)) {
-            System.out.println("WE HERE BOI3");
             map.updateTileAt(new Position(pos.getX(), pos.getY() + 1), Tile.QUESTION);
             notifyOthers();
         } else if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).equals(Tile.QUESTION_ICE)) {
-            System.out.println("WE HERE BOI4");
             map.updateTileAt(new Position(pos.getX(), pos.getY() - 1), Tile.QUESTION);
             notifyOthers();
         }
@@ -109,28 +95,28 @@ public class Player extends Observable implements IPlayer {
     public void move(Direction direction) {
         switch (direction) {
             case RIGHT:
-                if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).isTransparent() && !other.getPosition().equals(new Position(pos.getX() + 1, pos.getY()))) {
+                if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).isTransparent()) {
                     pos.set(pos.getX() + 1, pos.getY());
                     dir = Direction.RIGHT;
                     notifyOthers();
                 } break;
 
             case LEFT:
-                if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).isTransparent() && !other.getPosition().equals(new Position(pos.getX() - 1, pos.getY()))) {
+                if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).isTransparent()) {
                     pos.set(pos.getX() - 1, pos.getY());
                     dir = Direction.LEFT;
                     notifyOthers();
                 } break;
 
             case DOWN:
-                if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).isTransparent() && !other.getPosition().equals(new Position(pos.getX(), pos.getY() + 1))) {
+                if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).isTransparent()) {
                     pos.set(pos.getX(), pos.getY() + 1);
                     dir = Direction.DOWN;
                     notifyOthers();
                 } break;
 
             case UP:
-                if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).isTransparent() && !other.getPosition().equals(new Position(pos.getX(), pos.getY() - 1))) {
+                if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).isTransparent()) {
                     pos.set(pos.getX(), pos.getY() - 1);
                     dir = Direction.UP;
                     notifyOthers();

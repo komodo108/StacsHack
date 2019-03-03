@@ -21,6 +21,4 @@ public interface IPlayer {
     void move(Direction direction);
 
     void addUpdater(Observer o);
-
-    void updatePlayer2(IPlayer player);
 }

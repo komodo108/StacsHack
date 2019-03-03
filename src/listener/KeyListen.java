@@ -21,26 +21,32 @@ public class KeyListen implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        if(MainView.canUpdate /* && !player.isWinner()*/) {
-            switch (keyEvent.getKeyCode()) {
-                case VK_W:
+        switch (keyEvent.getKeyCode()) {
+            case VK_W:
+                if(MainView.canUpdate) {
                     player.move(Direction.UP);
-                    break;
-                case VK_S:
+                } MainView.canUpdate = false;
+                break;
+            case VK_S:
+                if(MainView.canUpdate) {
                     player.move(Direction.DOWN);
-                    break;
-                case VK_A:
+                } MainView.canUpdate = false;
+                break;
+            case VK_A:
+                if(MainView.canUpdate) {
                     player.move(Direction.LEFT);
-                    break;
-                case VK_D:
+                } MainView.canUpdate = false;
+                break;
+            case VK_D:
+                if(MainView.canUpdate) {
                     player.move(Direction.RIGHT);
-                    break;
-                case VK_SPACE:
-                    // Interact with an item / block
-                    player.pickUpItem();
-                    player.breakIce();
-                    break;
-            } MainView.canUpdate = false;
+                } MainView.canUpdate = false;
+                break;
+            case VK_SPACE:
+                // Interact with an item / block
+                player.pickUpItem();
+                player.breakIce();
+                break;
         }
     }
 

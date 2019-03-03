@@ -16,7 +16,7 @@ public class ItemManager {
     private ItemManager() { }
 
     public void setItemAt(Position pos, Tile tile) {
-        IItem item;
+        IItem item = null;
 
         switch(tile) {
             case FIRE:
@@ -28,7 +28,7 @@ public class ItemManager {
             case FLASK:
                 item = new Flask(pos);
                 break;
-        }
+        } items.add(item);
     }
 
     public ArrayList<IItem> getItems() {
