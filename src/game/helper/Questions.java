@@ -27,7 +27,7 @@ public class Questions {
         }
     }
 
-    String getRandomQuestion() {
+    public String getRandomQuestion() {
         Random random = new Random();
         int index = random.nextInt(questions.size());
         int asked = 0;

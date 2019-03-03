@@ -18,6 +18,7 @@ public class Player extends Observable implements IPlayer {
     private ItemManager im = ItemManager.getInstance();
     private QuestionManager qm = QuestionManager.getInstance();
     private Map map = Map.getInstance();
+    private String answer;
 
     public Player(Position pos, Direction dir) {
         this.pos = pos;
@@ -100,14 +101,11 @@ public class Player extends Observable implements IPlayer {
 
     @Override
     public void askQ() {
-        if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).equals(Tile.QUESTION)) {
-            notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX() + 1, pos.getY())).equals(Tile.QUESTION)) {
-            notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).equals(Tile.QUESTION)) {
-            notifyOthers();
-        } else if (map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).equals(Tile.QUESTION)) {
-            notifyOthers();
+        if (map.getTileAt(new Position(pos.getX() - 1, pos.getY())).equals(Tile.QUESTION) ||
+                map.getTileAt(new Position(pos.getX() + 1, pos.getY())).equals(Tile.QUESTION)  ||
+                map.getTileAt(new Position(pos.getX(), pos.getY() + 1)).equals(Tile.QUESTION) ||
+                map.getTileAt(new Position(pos.getX(), pos.getY() - 1)).equals(Tile.QUESTION)) {
+            answer = qm.ask();
         }
     }
 
