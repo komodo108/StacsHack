@@ -1,9 +1,8 @@
-package game;
+package views;
 
 import game.helper.Questions;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,10 +19,10 @@ public class QuestionManager {
     public String ask() {
         System.out.println("areweheeeeeeeeeeere");
         JFrame frame = new JFrame("Button Example");
-        frame.setSize(500, 400);
+        frame.setSize(1000, 400);
 
         //submit button
-        JButton button=new JButton("Submit");
+        JButton button=new JButton("Go!");
         button.setBounds(100,100,140, 40);
 
         //enter name label

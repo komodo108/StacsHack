@@ -8,6 +8,7 @@ import game.map.Map;
 import network.types.ItemRemovePacket;
 import network.types.MapPacket;
 import network.types.PlayerPacket;
+import views.QuestionManager;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -191,6 +192,13 @@ public class Player extends Observable implements IPlayer {
             answer =  qm.ask();
             System.out.println(answer);
             map.updateTileAt(p, Tile.FLOOR);
+
+            try {
+                write.write(new MapPacket(p, Tile.FLOOR, null).asPacket());
+                write.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -146,11 +146,13 @@ public class MainView extends Observable implements Observer {
                                 PlayerPacket playerPacket = (PlayerPacket) packet;
                                 if(mode) {
                                     helper = playerPacket.getPlayer();
+                                    helper.setOther(icebreaker);
                                     icebreaker.setOther(helper);
                                     render.setOther(helper);
                                 } else {
                                     icebreaker = playerPacket.getPlayer();
                                     helper.setOther(icebreaker);
+                                    icebreaker.setOther(helper);
                                     render.setOther(icebreaker);
                                 }
                             } else if(packet instanceof WinPacket) {
